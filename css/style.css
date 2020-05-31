@@ -1,3 +1,92 @@
+@import url('https://fonts.googleapis.com/css2?family=Chelsea+Market&family=Lato&display=swap');
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  font-family: 'Lato', sans-serif;
+  background-color: #F6F8FF;
+}
+
 h1 {
-  color: purple;
+  margin-bottom: 2em;
+  font-family: 'Chelsea Market', cursive;
+  color: #0C120C;
+}
+
+p {
+  margin-top: 3em;
+  height: 25px;
+}
+
+#score {
+  position: absolute;
+  width: 50px;
+  height: 300px;
+  left: 25px;
+}
+
+.indScore {
+  line-height: 100px;
+  height: 100px;
+}
+
+#player {
+  font-family: 'Chelsea Market', cursive;
+}
+
+.gameBoard {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  width: 300px;
+  margin: 0 auto;
+}
+
+.gameCell {
+  flex: 0 0 33.3333333%;
+  height: 100px;
+  border: 3px solid #0C120C;
+  box-sizing: border-box;
+  text-align: center;
+  font-size: 5em;
+  line-height: 100px;
+  font-family: 'Chelsea Market', cursive;
+}
+
+button {
+  width: 8em;
+}
+
+.gameCell:hover {
+  background-color: #C7D6D5;
+}
+
+.gameCell:first-child,
+.gameCell:nth-child(2),
+.gameCell:nth-child(3) {
+  border-top: none;
+}
+
+.gameCell:nth-child(3n + 1) {
+  border-left: none;
+}
+
+.gameCell:nth-child(3n + 3) {
+  border-right: none;
+}
+
+.gameCell:last-child,
+.gameCell:nth-child(8),
+.gameCell:nth-child(7) {
+  border-bottom: none;
+}
+
+.xSelect:before {
+  content: "X";
+}
+
+.oSelect:before {
+  content: "O";
 }
