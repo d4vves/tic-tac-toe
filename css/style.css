@@ -57,6 +57,9 @@ p {
 
 button {
   width: 8em;
+  background-color: #F6F8FF;
+  border: 1px solid gray;
+  border-radius: 4px;
 }
 
 .gameCell:hover {
