@@ -4,13 +4,25 @@ let gameMessage = document.getElementById("gameMessage");
 let resetButton = document.getElementById("reset");
 let xScore = document.getElementById("xScore");
 let oScore = document.getElementById("oScore");
+let onePlayer = document.getElementById("player1");
+let twoPlayer = document.getElementById("player2");
 
 /*----- Game Logic Variables -----*/
 let playerTurn = 0;
-let xPlayer = [];
-let oPlayer = [];
-let xWins = 0;
-let oWins = 0;
+let gameOver = false;
+twoPlayer.disabled = true;
+
+let xPlayer = {
+    selects: [],
+    wins: 0
+}
+
+let oPlayer = {
+    selects: [],
+    wins: 0,
+    human: true
+}
+
 const winStates = [
     ["0", "1", "2"],
     ["3", "4", "5"],
@@ -21,54 +33,105 @@ const winStates = [
     ["0", "4", "8"],
     ["2", "4", "6"]
 ]
+
 let cellStates = {
-    topL: false,
-    topC: false,
-    topR: false,
-    midL: false,
-    midC: false,
-    midR: false,
-    botL: false,
-    botC: false,
-    botR: false,
+    0: false,
+    1: false,
+    2: false,
+    3: false,
+    4: false,
+    5: false,
+    6: false,
+    7: false,
+    8: false,
 }
 
 /*----- Event Listeners & Functions -----*/
 gameBoard.addEventListener("click", cellClick);
 resetButton.addEventListener("click", resetGame);
+onePlayer.addEventListener("click", comPlayer);
+twoPlayer.addEventListener("click", humPlayer);
+
+function comPlayer() {
+    oPlayer.human = false;
+    onePlayer.disabled = true;
+    twoPlayer.disabled = false;
+    xScore.innerText = "";
+    oScore.innerText = "";
+    xPlayer.wins = 0;
+    oPlayer.wins = 0;
+    resetGame();
+}
+
+function humPlayer() {
+    oPlayer.human = true;
+    onePlayer.disabled = false;
+    twoPlayer.disabled = true;
+    xScore.innerText = "";
+    oScore.innerText = "";
+    xPlayer.wins = 0;
+    oPlayer.wins = 0;
+    resetGame();
+}
 
 function cellClick(e) {
     let choice = e.target.id;
     if (!cellStates[choice]) {
-        if (!playerTurn) {
+        if (!playerTurn && oPlayer.human) {
             cellStates[choice] = true;
-            xPlayer.push(choice);
+            xPlayer.selects.push(choice);
             e.target.classList.add("xSelect");
-            changeTurn();
             evaluateCombinations();
-        } else {
+        } else if (!playerTurn && !oPlayer.human) {
             cellStates[choice] = true;
-            oPlayer.push(choice);
-            e.target.classList.add("oSelect");
-            changeTurn();
+            xPlayer.selects.push(choice);
+            e.target.classList.add("xSelect");
             evaluateCombinations();
+            computerChoice();
+        } else if (playerTurn && oPlayer.human) {
+            cellStates[choice] = true;
+            oPlayer.selects.push(choice);
+            e.target.classList.add("oSelect");
+            evaluateCombinations();
+        } else if (playerTurn && !oPlayer.human) {
+            evaluateCombinations();
+            computerChoice();
         }
     } 
 }
 
+function computerChoice() {
+    let computerChooses = randomChoice(9);
+    if (!cellStates[computerChooses] && !gameOver) {
+        cellStates[computerChooses] = true;
+        oPlayer.selects.push(computerChooses);
+        let compChoice = document.getElementById(computerChooses);
+        compChoice.classList.add("oSelect");
+        evaluateCombinations();
+    } else if (cellStates[computerChooses] && !gameOver) {
+        computerChoice();
+    }
+}
+
+function randomChoice(num) {
+    return Math.floor(Math.random() * Math.floor(num)).toString();
+}
+
 function evaluateCombinations() {
-    if (playerTurn) {
+    if (!playerTurn) {
         for (let i = 0; i < winStates.length; i++) {
             let winningCombo = winStates[i];
             let match = 0;
             for (let j = 0; j < winningCombo.length; j++) {
-                if (xPlayer.includes(winningCombo[j])) {
+                if (xPlayer.selects.includes(winningCombo[j])) {
                     match++;
-                } if (match === 3) {
+                }
+                if (match === 3) {
+                    gameOver = true;
                     gameMessage.innerText = "player X winz!"
                     gameBoard.removeEventListener("click", cellClick);
-                    xWins++;
-                    xScore.innerText = xWins;
+                    xPlayer.wins++;
+                    xScore.innerText = xPlayer.wins;
                 }
             }
         }
@@ -77,18 +140,24 @@ function evaluateCombinations() {
             let winningCombo = winStates[i];
             let match = 0;
             for (let j = 0; j < winningCombo.length; j++) {
-                if (oPlayer.includes(winningCombo[j])) {
+                debugger 
+                if (oPlayer.selects.includes(winningCombo[j])) {
                     match++;
-                } if (match === 3) {
+                }
+                if (match === 3) {
+                    gameOver = true;
                     gameMessage.innerText = "player O winz!"
                     gameBoard.removeEventListener("click", cellClick);
-                    oWins++;
-                    oScore.innerText = oWins;
+                    oPlayer.wins++;
+                    oScore.innerText = oPlayer.wins;
                 }
             }
         }
     }
-    if (xPlayer.length >= 4 && oPlayer.length >= 4) {
+    if (!gameOver) {
+        changeTurn();
+    }
+    if (xPlayer.selects.length > 4 && oPlayer.selects.length > 4) {
         gameDraw();
     }
 }
@@ -104,13 +173,17 @@ function changeTurn() {
 }
 
 function gameDraw() {
+    gameOver = true;
     gameMessage.innerText = "tis a draw!";
-    gameBoard.removeEventListener("click", cellClick);
+    for (let state in cellStates) {
+        cellStates[state] = true;
+    }
 }
 
 function resetGame() {
-    xPlayer = [];
-    oPlayer = [];
+    gameOver = false;
+    xPlayer.selects = [];
+    oPlayer.selects = [];
     gameMessage.innerText = "";
     for (let i = 0; i < gameBoard.children.length; i++) {
         gameBoard.children[i].className = "gameCell";

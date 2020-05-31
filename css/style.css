@@ -20,20 +20,11 @@ p {
   height: 25px;
 }
 
-#score {
-  position: absolute;
-  width: 50px;
-  height: 300px;
-  left: 25px;
-}
-
-.indScore {
-  line-height: 100px;
-  height: 100px;
-}
-
-#player {
-  font-family: 'Chelsea Market', cursive;
+button {
+  width: 8em;
+  background-color: #F6F8FF;
+  border: 1px solid gray;
+  border-radius: 4px;
 }
 
 .gameBoard {
@@ -55,15 +46,40 @@ p {
   font-family: 'Chelsea Market', cursive;
 }
 
-button {
-  width: 8em;
-  background-color: #F6F8FF;
-  border: 1px solid gray;
-  border-radius: 4px;
-}
-
 .gameCell:hover {
   background-color: #C7D6D5;
+}
+
+#score {
+  position: absolute;
+  width: 50px;
+  height: 300px;
+  left: 25px;
+}
+
+#players {
+  position: absolute;
+  top: 125px;
+  right: 25px;
+  height: 300px;
+}
+
+#player1 {
+  display: block;
+  margin-bottom: 20px;
+}
+
+#player2 {
+  display: block;
+}
+
+.indScore {
+  line-height: 100px;
+  height: 100px;
+}
+
+#player {
+  font-family: 'Chelsea Market', cursive;
 }
 
 .gameCell:first-child,
