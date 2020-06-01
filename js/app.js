@@ -154,11 +154,11 @@ function evaluateCombinations() {
             }
         }
     }
-    if (!gameOver) {
-        changeTurn();
-    }
-    if (xPlayer.selects.length > 4 && oPlayer.selects.length > 4) {
+    if (xPlayer.selects.length > 4 || oPlayer.selects.length > 4) {
         gameDraw();
+    }
+    else {
+        changeTurn();
     }
 }
 
