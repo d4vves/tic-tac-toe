@@ -18,7 +18,7 @@ let xPlayer = {
 }
 
 let oPlayer = {
-    selects: [],
+    selects: [0, 1, 2],
     wins: 0,
     human: true
 }
@@ -154,7 +154,7 @@ function evaluateCombinations() {
             }
         }
     }
-    if (xPlayer.selects.length > 4 || oPlayer.selects.length > 4) {
+    if (xPlayer.selects.length > 4 & oPlayer.selects.length > 4) {
         gameDraw();
     }
     else {
@@ -163,12 +163,14 @@ function evaluateCombinations() {
 }
 
 function changeTurn() {
-    if (!playerTurn) {
-        playerTurn++;
-        gameMessage.innerText = "oh my! it's O's turn."
-    } else {
-        playerTurn--;
-        gameMessage.innerText = "x gonna give it to ya."
+    if (!gameOver) {
+        if (!playerTurn) {
+            playerTurn++;
+            gameMessage.innerText = "oh my! it's O's turn."
+        } else if (playerTurn) {
+            playerTurn--;
+            gameMessage.innerText = "x gonna give it to ya."
+        }
     }
 }
 
@@ -180,7 +182,7 @@ function gameDraw() {
     }
 }
 
-function resetGame() {
+function resetGame() { 
     gameOver = false;
     xPlayer.selects = [];
     oPlayer.selects = [];
