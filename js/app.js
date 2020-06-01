@@ -154,7 +154,8 @@ function evaluateCombinations() {
             }
         }
     }
-    if (xPlayer.selects.length > 4 & oPlayer.selects.length > 4) {
+    if (xPlayer.selects.length > 4 || oPlayer.selects.length > 4) {
+        gameOver = true;
         gameDraw();
     }
     else {
