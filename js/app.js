@@ -18,7 +18,7 @@ let xPlayer = {
 }
 
 let oPlayer = {
-    selects: [0, 1, 2],
+    selects: [],
     wins: 0,
     human: true
 }
@@ -140,7 +140,6 @@ function evaluateCombinations() {
             let winningCombo = winStates[i];
             let match = 0;
             for (let j = 0; j < winningCombo.length; j++) {
-                debugger 
                 if (oPlayer.selects.includes(winningCombo[j])) {
                     match++;
                 }
@@ -154,7 +153,7 @@ function evaluateCombinations() {
             }
         }
     }
-    if (xPlayer.selects.length > 4 || oPlayer.selects.length > 4 && !gameOver) {
+    if (Object.values(cellStates).filter(cell => cell).length > 8) {
         gameDraw();
     }
     else {
